@@ -3,10 +3,11 @@ package todo.service;
 import db.Database;
 import db.Entity;
 import exception.EntityNotFoundException;
+import exception.InvalidEntityException;
 import todo.entity.Step;
 import todo.entity.Task;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class EntityService {
 
@@ -15,11 +16,10 @@ public class EntityService {
             Entity entity = Database.get(id);
 
             if (entity instanceof Task) {
-                ArrayList<Entity> allSteps = Database.getAll(new Step("", Step.Status.NOT_STARTED, 0).getEntityCode());
+                List<Entity> allSteps = Database.getAll(Step.STEP_ENTITY_CODE);
 
                 for (Entity e : allSteps) {
-                    Step step = (Step) e;
-                    if (step.getTaskRef() == id) {
+                    if (e instanceof Step step && step.getTaskRef() == id) {
                         Database.delete(step.getId());
                     }
                 }
@@ -29,11 +29,9 @@ public class EntityService {
 
             System.out.println("Entity with ID=" + id + " successfully deleted.");
         } catch (EntityNotFoundException e) {
-            System.out.println("Cannot delete entity with ID=" + id + ".");
-            System.out.println("Error: " + e.getMessage());
+            System.err.println("Cannot delete entity with ID=" + id + ". Not found.");
         } catch (Exception e) {
-            System.out.println("Cannot delete entity with ID=" + id + ".");
-            System.out.println("Error: Something happend");
+            System.err.println("Unexpected error while deleting entity with ID=" + id);
         }
     }
 }
