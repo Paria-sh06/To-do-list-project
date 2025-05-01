@@ -17,12 +17,12 @@ public class Main {
             System.out.print("Enter command: ");
             String command = scanner.nextLine().trim();
 
-            if (command.equals("exit")) {
+            if (command.equalsIgnoreCase("exit")) {
                 System.out.println("Exiting the program.");
                 break;
             }
 
-            if (command.equals("add task")) {
+            if (command.equalsIgnoreCase("add task")) {
                 System.out.print("Title: ");
                 String title = scanner.nextLine();
 
@@ -34,11 +34,10 @@ public class Main {
 
                 try {
                     TaskService.addTask(title, description, dueDateString);
-                    System.out.println("Task saved successfully.");
                 } catch (InvalidEntityException | IllegalArgumentException e) {
                     System.out.println("Error: " + e.getMessage());
                 }
-            } else if (command.equals("add step")) {
+            } else if (command.equalsIgnoreCase("add step")) {
                 System.out.print("TaskID: ");
                 String taskIdInput = scanner.nextLine();
 
@@ -51,7 +50,7 @@ public class Main {
                 } catch (NumberFormatException e) {
                     System.out.println("Invalid task ID. Please enter a number.");
                 }
-            } else if (command.equals("delete")) {
+            } else if (command.equalsIgnoreCase("delete")) {
                 System.out.print("ID: ");
                 String idInput = scanner.nextLine();
 
@@ -61,7 +60,7 @@ public class Main {
                 } catch (NumberFormatException e) {
                     System.out.println("Invalid ID format.");
                 }
-            } else if (command.equals("update task")) {
+            } else if (command.equalsIgnoreCase("update task")) {
                 System.out.print("ID: ");
                 String idInput = scanner.nextLine();
 
@@ -77,7 +76,7 @@ public class Main {
                 } catch (NumberFormatException e) {
                     System.out.println("Invalid ID format.");
                 }
-            } else if (command.equals("update step")) {
+            } else if (command.equalsIgnoreCase("update step")) {
                 System.out.print("ID: ");
                 String idInput = scanner.nextLine();
 
@@ -93,7 +92,7 @@ public class Main {
                 } catch (NumberFormatException e) {
                     System.out.println("Invalid ID format.");
                 }
-            } else if (command.equals("get task-by-id")) {
+            } else if (command.equalsIgnoreCase("get task-by-id")) {
                 System.out.print("ID: ");
                 String idInput = scanner.nextLine();
 
@@ -127,7 +126,12 @@ public class Main {
                 } catch (EntityNotFoundException e) {
                     System.out.println("Cannot find task with ID=" + idInput);
                 }
-            } else {
+            } else if (command.equalsIgnoreCase("get all-tasks")){
+                TaskService.getAllTasks();
+            }else if(command.equalsIgnoreCase("get incomplete-tasks")) {
+                TaskService.getIncompleteTasks();
+            }
+            else {
                 System.out.println("Unknown command.");
             }
 
